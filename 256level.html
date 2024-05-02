@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>What is color name</title>
+<style>
+    body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .slider-container {
+        width: 80%;
+        margin: auto;
+    }
+    .color-slider {
+        width: 80%;
+        margin: 0 auto;
+	display: block;
+    }
+    .color-box {
+        width: 50px;
+        height: 50px;
+        display: inline-block;
+        margin: 5px;
+    }
+    #history {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+    <div class="slider-container">
+        R: <input type="range" min="0" max="255" value="125" id="r-slider" class="color-slider"><span id="r-value">125</span><br>
+        G: <input type="range" min="0" max="255" value="125" id="g-slider" class="color-slider"><span id="g-value">125</span><br>
+        B: <input type="range" min="0" max="255" value="125" id="b-slider" class="color-slider"><span id="b-value">125</span>
+    </div>
+    <button id="guessButton">推測する</button>
+    <div id="history"></div>
+
+<script>
+    const randomColor = () => Math.floor(Math.random() * 256);
+    let correctR = randomColor(), correctG = randomColor(), correctB = randomColor();
+    document.body.style.backgroundColor = `rgb(${correctR}, ${correctG}, ${correctB})`;
+
+    const sliders = ['r', 'g', 'b'];
+    let guessCount = 0;
+
+    sliders.forEach((color) => {
+        const slider = document.getElementById(`${color}-slider`);
+        const output = document.getElementById(`${color}-value`);
+        output.innerHTML = slider.value;
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+    });
+
+    document.getElementById('guessButton').onclick = () => {
+        guessCount++;
+        const r = parseInt(document.getElementById('r-slider').value);
+        const g = parseInt(document.getElementById('g-slider').value);
+        const b = parseInt(document.getElementById('b-slider').value);
+        const similarity = calculateSimilarity(r, g, b);
+
+        const historyElement = document.getElementById('history');
+        const attempt = document.createElement('div');
+        attempt.innerHTML = `<div class="color-box" style="background-color: rgb(${r},${g},${b});"></div> RGB(${r}, ${g}, ${b}) - 類似率: ${similarity}% - 試行回数: ${guessCount}`;
+        historyElement.insertBefore(attempt, historyElement.firstChild);
+
+        if (similarity === 100) {
+		alert('正解！');
+    		location.reload(); // ページをリロードしてリトライ
+        }
+    };
+
+    function calculateSimilarity(r, g, b) {
+        const rDiff = Math.abs(r - correctR);
+        const gDiff = Math.abs(g - correctG);
+        const bDiff = Math.abs(b - correctB);
+        const diff = (rDiff + gDiff + bDiff) / (3 * 255);
+        return Math.round((1 - diff) * 100);
+    }
+</script>
+</body>
+</html>

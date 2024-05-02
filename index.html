@@ -1,101 +1,45 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>What is color name?</title>
-    <style>
-        /* ここに CSS を挿入 */
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        .slider {
-            width: 100%;
-        }
-        .color-box {
-            height: 50px;
-            width: 50px;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        #history li {
-            list-style-type: none;
-            margin-bottom: 5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>レベル選択</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+  }
+  .button {
+    font-size: 20px;
+    padding: 10px 40px;
+    margin: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  #button16 {
+    background-color: #4CAF50;
+    color: white;
+  }
+  #button256 {
+    background-color: #2196F3;
+    color: white;
+  }
+  #button16:hover, #button256:hover {
+    background-color: #ffffff;
+    color: #000000;
+    transform: scale(1.05);
+  }
+</style>
 </head>
 <body>
-    <h1>What is color name?</h1>
-    <div>
-        <label for="redSlider">R: </label>
-        <input type="range" id="redSlider" class="slider" min="0" max="15" value="0">
-        <span id="redValue">0</span>
-    </div>
-    <div>
-        <label for="greenSlider">G: </label>
-        <input type="range" id="greenSlider" class="slider" min="0" max="15" value="0">
-        <span id="greenValue">0</span>
-    </div>
-    <div>
-        <label for="blueSlider">B: </label>
-        <input type="range" id="blueSlider" class="slider" min="0" max="15" value="0">
-        <span id="blueValue">0</span>
-    </div>
-    <button id="guessButton">推測する</button>
-    <h2>履歴</h2>
-    <ul id="history"></ul>
 
-    <script>
-        // ここに JavaScript を挿入
-	// 正解の色を設定
-	const correctColor = { r: Math.floor(Math.random() * 16), g: Math.floor(Math.random() * 16), b: Math.floor(Math.random() * 16) };
-	// 正解の色を設定する背景色に変換
-	function updateBackgroundColor() {
-    		const colorString = `#${correctColor.r.toString(16)}${correctColor.g.toString(16)}${correctColor.b.toString(16)}`;
-    		document.body.style.backgroundColor = colorString;
-	}
-	updateBackgroundColor();
+<button id="button16" class="button" onclick="window.location.href='16level.html'">16</button>
+<button id="button256" class="button" onclick="window.location.href='256level.html'">256</button>
 
-	// スライダーの値を更新する
-	function updateSliderValue(sliderId, valueId) {
-    		const slider = document.getElementById(sliderId);
-    		const valueDisplay = document.getElementById(valueId);
-    	slider.oninput = function() {
-        	valueDisplay.innerText = parseInt(this.value).toString(16).toUpperCase();
-    	}
-	}
-	updateSliderValue('redSlider', 'redValue');
-	updateSliderValue('greenSlider', 'greenValue');
-	updateSliderValue('blueSlider', 'blueValue');
-
-	// 推測を処理する
-	document.getElementById('guessButton').onclick = function() {
-	const r = parseInt(document.getElementById('redSlider').value);
-    	const g = parseInt(document.getElementById('greenSlider').value);
-    	const b = parseInt(document.getElementById('blueSlider').value);
-    	const similarity = calculateSimilarity({r, g, b}, correctColor);
-    	updateHistory(r, g, b, similarity);
-
-	    if (similarity === 100) {
-        	alert('正解！');
-	        location.reload(); // ページをリロードしてゲームをリセット
-    		}
-	};
-
-	// 類似度を計算する
-	function calculateSimilarity(inputColor, correctColor) {
-    		const similarity = 100 - (Math.abs(inputColor.r - correctColor.r) + Math.abs(inputColor.g - correctColor.g) + Math.abs(inputColor.b - correctColor.b)) * (100 / (16 * 3));
-    		return Math.floor(similarity);
-	}
-
-	// 履歴に推測を追加する
-	function updateHistory(r, g, b, similarity) {
-    		const historyList = document.getElementById('history');
-    		const entry = document.createElement('li');
-    		entry.innerHTML = `<div class="color-box" style="background-color: #${r.toString(16)}${g.toString(16)}${b.toString(16)}"></div> R:${r.toString(16)} G:${g.toString(16)} B:${b.toString(16)} - 類似率: ${similarity}%`;
-    		historyList.insertBefore(entry, historyList.firstChild); // 新しい履歴を上に追加
-	}
-
-    </script>
 </body>
 </html>
