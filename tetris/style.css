@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    flex-direction: column; /* 子要素を縦に並べる */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+canvas {
+    border: 1px solid #000;
+}
+
+#score, #tetris {
+    width: 100%; /* 幅を指定 */
+    text-align: center; /* テキストを中央揃えに */
+}
+
+#score {
+    background-color: #f0f0f0; /* スコア表示部分の背景色 */
+    margin-bottom: 10px; /* 下のdivとの間隔 */
+}
+
+#tetris {
+    display: flex; /* flexboxにする */
+    justify-content: center; /* 中央揃え */
+    align-items: start; /* 子要素を上端に揃える */
+    gap: 20px; /* canvas間の間隔を設定 */
+}
+
+/* #nextPieceのposition: fixed;を削除し、必要なスタイルを調整 */
+#nextPiece {
+    border: 1px solid #FFF; /* 枠を白色で表示 */
+    background-color: #000; /* 背景色を黒に設定 */
+}
